@@ -4,9 +4,8 @@ import 'package:gemini_app/bloc/chat_bloc.dart';
 import 'package:lottie/lottie.dart';
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
+  HomeScreen({Key? key}) : super(key: key);
   final TextEditingController controller = TextEditingController();
-  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +13,8 @@ class HomeScreen extends StatelessWidget {
       body: BlocConsumer<ChatBloc, ChatState>(
         listener: (context, state) {
           if (state is ChatFailure) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.errorText)));
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(state.errorText)));
           }
         },
         builder: (context, state) {
@@ -53,12 +53,17 @@ class HomeScreen extends StatelessWidget {
                 ),
                 Expanded(
                   child: ListView.builder(
-                    controller: _scrollController,
+                    reverse: true,
+                    shrinkWrap: true,
                     itemCount: state is ChatInitial
                         ? 0
-                        : (state is ChatSuccess) ? state.messages.length: (state as ChatFailure).messages.length,
+                        : (state is ChatSuccess)
+                            ? state.messages.length
+                            : (state as ChatFailure).messages.length,
                     itemBuilder: (context, index) {
-                      final message = (state is ChatSuccess) ? state .messages[index] :(state as ChatFailure).messages[index];
+                      final message = (state is ChatSuccess)
+                          ? state.messages[index]
+                          : (state as ChatFailure).messages[index];
                       return Container(
                         margin: const EdgeInsets.only(
                             bottom: 12, right: 16, left: 16),
@@ -137,8 +142,6 @@ class HomeScreen extends StatelessWidget {
                               OnChatEventSendButtonClicked(
                                   inputMessage: controller.text.trim()));
                           controller.clear();
-                          _scrollController.jumpTo(
-                              _scrollController.position.maxScrollExtent);
                         }
                       },
                       child: CircleAvatar(

@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:gemini_app/models/chat_message_model.dart';
@@ -11,7 +10,6 @@ class ChatRepo {
       List<ChatMessageModel> previousMessages) async {
     try {
       Dio dio = Dio();
-
       final response = await dio.post(
           "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=$apiKey",
           data: {
@@ -42,7 +40,6 @@ class ChatRepo {
               }
             ]
           });
-      log(response.toString());
       return right(
           response.data['candidates'].first['content']['parts'].first['text']);
     } catch (e) {

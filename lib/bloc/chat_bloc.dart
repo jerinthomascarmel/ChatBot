@@ -18,14 +18,16 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
     final String input = event.inputMessage;
     messages.add(
         ChatMessageModel(role: "user", parts: [ChatPartModel(text: input)]));
-    emit(ChatSuccess(isGenerating: true, messages: messages));
+    emit(ChatSuccess(isGenerating: true, messages: messages.reversed.toList()));
     final answerbyBot = await ChatRepo.chatTextGenerationRepo(messages);
     answerbyBot.fold((l) {
-      emit(ChatFailure(messages: messages, errorText: l.message));
+      emit(ChatFailure(
+          messages: messages.reversed.toList(), errorText: l.message));
     }, (r) {
       messages.add(
           ChatMessageModel(role: "model", parts: [ChatPartModel(text: r)]));
-      emit(ChatSuccess(isGenerating: false, messages: messages));
+      emit(ChatSuccess(
+          isGenerating: false, messages: messages.reversed.toList()));
     });
   }
 }

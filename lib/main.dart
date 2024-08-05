@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       create: (context) => ChatBloc(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'Chat Bot',
         theme: ThemeData(
             fontFamily: "GamjaFlower",
             textTheme: const TextTheme(
